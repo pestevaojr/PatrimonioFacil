@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Storage } from '@ionic/storage';
+import { InventariosService } from './inventarios.service';
 
 @Component({
   templateUrl: 'inventarios.page.html',
@@ -6,6 +8,12 @@ import { Component } from '@angular/core';
 })
 export class InventariosPage {
 
-  constructor() {}
+  constructor(private service: InventariosService) {
+    this.service.salvarInventario({ nome: 'inventario1'});
+    this.service.salvarInventario({ nome: 'inventario2'});
+  }
 
+  get inventarios() {
+    return this.service.inventarios;
+  }
 }

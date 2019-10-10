@@ -7,6 +7,7 @@
 </ion-header>
 
 <ion-content>
+    <!--
     <ion-card class="welcome-card">
       <img src="/assets/shapes.svg" alt="" />
       <ion-card-header>
@@ -36,6 +37,12 @@
       <ion-item href="https://ionicframework.com/docs/theming/basics">
         <ion-icon slot="start" color="medium" name="color-fill"></ion-icon>
         <ion-label>Theme Your App</ion-label>
+      </ion-item>
+    </ion-list>
+    -->
+    <ion-list>
+      <ion-item *ngFor="let inventario of inventarios">
+        <ion-label>{{inventario.nome}}</ion-label>
       </ion-item>
     </ion-list>
 </ion-content>
