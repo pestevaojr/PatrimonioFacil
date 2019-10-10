@@ -1,5 +1,7 @@
 {
   "name": "PatrimonioFacil",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
