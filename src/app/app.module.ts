@@ -16,7 +16,10 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    IonicStorageModule.forRoot(),
+    IonicStorageModule.forRoot({
+      name: 'patrimonio_db',
+      driverOrder: ['indexeddb', 'sqlite', 'websql']
+    }),
     AppRoutingModule],
   providers: [
     StatusBar,
