@@ -19,6 +19,7 @@ export class InventariosService {
   }
 
   carregarInventarioAtivo() {
+    this.inventarioAtivo = null;
     this._storage.get(KEY_INVENTARIO_ATIVO).then(inventarioAtivo => {
       if (inventarioAtivo) {
         this.inventarioAtivo = inventarioAtivo;
