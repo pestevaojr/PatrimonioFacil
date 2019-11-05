@@ -7,10 +7,16 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { IonicStorageModule } from '@ionic/storage';
+import { IonicStorageModule, StorageConfig } from '@ionic/storage';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+const storageConfig: StorageConfig = {
+  name: 'patrimonio_db',
+  storeName: 'patrimonio_facil',
+  driverOrder: ['indexeddb']
+};
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,10 +24,7 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    IonicStorageModule.forRoot({
-      name: 'patrimonio_db',
-      driverOrder: ['indexeddb', 'sqlite', 'websql']
-    }),
+    IonicStorageModule.forRoot(storageConfig),
     AppRoutingModule,
     FormsModule
   ],

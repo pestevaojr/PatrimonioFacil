@@ -8,12 +8,9 @@ import { InventariosService } from './inventarios.service';
 })
 export class InventariosPage {
 
-  constructor(private service: InventariosService) {
-    this.service.salvarInventario({ nome: 'inventario1'});
-    this.service.salvarInventario({ nome: 'inventario2'});
-  }
+  constructor(private service: InventariosService) {}
 
   get inventarios() {
-    return this.service.inventarios;
+    return this.service.obterInventarios();
   }
 }
