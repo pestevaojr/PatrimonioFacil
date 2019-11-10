@@ -41,6 +41,7 @@
   <ion-list>
     <ion-item *ngFor="let inventario of inventarios">
       <ion-label>{{inventario.nome}}</ion-label>
+      <ion-chip *ngIf="inventario.atual" color="danger"><ion-label>Atual</ion-label></ion-chip>
     </ion-item>
   </ion-list>
 
