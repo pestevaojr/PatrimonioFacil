@@ -1,9 +1,17 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab Three
+      Inserir bem manualmente
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Código do bem</ion-label>
+    <ion-input [(ngModel)]='codigoBemManual' type='number'></ion-input>
+  </ion-item>
+  <ion-button expand="block" (click)="conferirBemManualmente()">
+    Adicionar Bem
+  </ion-button>
+</ion-content>

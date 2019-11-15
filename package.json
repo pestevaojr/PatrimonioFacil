@@ -1,15 +1,16 @@
 {
   "name": "PatrimonioFacil",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Paulo Estêvão da Cruz Lima Júnior",
+  "homepage": "https://www.linkedin.com/in/paulo-est%C3%AAv%C3%A3o-da-cruz-lima-j%C3%BAnior-88727a183/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "android-device": "ionic cordova run android --device"
   },
   "private": true,
   "dependencies": {
@@ -24,15 +25,18 @@
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/splash-screen": "^5.0.0",
     "@ionic-native/status-bar": "^5.0.0",
+    "@ionic-native/toast": "^5.16.0",
     "@ionic/angular": "^4.7.1",
     "@ionic/storage": "^2.2.0",
-    "cordova-android": "8.1.0",
+    "cordova-android": "^8.1.0",
+    "cordova-browser": "^6.0.0",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^4.1.2",
     "cordova-plugin-splashscreen": "^5.0.2",
     "cordova-plugin-statusbar": "^2.4.2",
     "cordova-plugin-whitelist": "^1.3.3",
+    "cordova-plugin-x-toast": "^2.7.2",
     "core-js": "^2.5.4",
     "phonegap-plugin-barcodescanner": "^8.1.0",
     "rxjs": "~6.5.1",
@@ -76,10 +80,12 @@
       "cordova-plugin-ionic-webview": {
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
-      "cordova-plugin-ionic-keyboard": {}
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-x-toast": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "browser"
     ]
   }
 }

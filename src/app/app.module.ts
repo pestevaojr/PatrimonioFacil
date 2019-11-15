@@ -11,6 +11,7 @@ import { IonicStorageModule, StorageConfig } from '@ionic/storage';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { Toast } from '@ionic-native/toast/ngx';
 
 const storageConfig: StorageConfig = {
   name: 'patrimonio_db',
@@ -32,7 +33,8 @@ const storageConfig: StorageConfig = {
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    BarcodeScanner
+    BarcodeScanner,
+    Toast
   ],
   bootstrap: [AppComponent]
 })

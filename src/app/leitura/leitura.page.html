@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
       Leitura de código de barras
     </ion-title>
@@ -7,7 +7,19 @@
 </ion-header>
 
 <ion-content>
- 
+  <ion-item>
+    <ion-label position="floating">Código do bem</ion-label>
+    <ion-input [(ngModel)]='codigoBemManual' type='number'></ion-input>
+  </ion-item>
+  
+  <ion-button expand="block" (click)="conferirBemManualmente()">
+    Adicionar Bem
+  </ion-button>
+
+  <ion-button expand="block" (click)="scanCode()" color="secondary">
+    Escanear
+  </ion-button>
+  <!--
   <ion-button (click)="scanCode()">
     Escanear
   </ion-button>
@@ -27,5 +39,5 @@
   <ion-button (click)="encodedText()">
     Criar QR
   </ion-button>
-
+-->
 </ion-content>
