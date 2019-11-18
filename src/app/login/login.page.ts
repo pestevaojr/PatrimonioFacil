@@ -4,7 +4,7 @@ import { NavController, Platform, AlertController, LoadingController, ToastContr
 import { AuthenticationService } from '../services/authentication.service';
 import { Router } from '@angular/router';
 
-//import { NativeStorage } from '@ionic-native/native-storage/ngx';
+// import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 
@@ -35,7 +35,7 @@ export class LoginPage implements OnInit {
     private authService: AuthenticationService,
     private formBuilder: FormBuilder,
     private googlePlus: GooglePlus,
-    //private nativeStorage: NativeStorage,
+    // private nativeStorage: NativeStorage,
     public loadingController: LoadingController,
     private toastController: ToastController,
     private toastNative: Toast,
@@ -90,34 +90,6 @@ export class LoginPage implements OnInit {
         loading.dismiss();
         this.presentToast('Erro ao efetuar login. ' + err);
       });
-
-    /*this.googlePlus.login({
-      scopes: '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
-      webClientId: '856652910182-mce6gqk18kf9dlo6075i9545psjnif68.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
-      offline: true // Optional, but requires the webClientId - if set to true the plugin will also return a serverAuthCode, which can be used to grant offline access to a non-Google server
-    })
-      .then(user => {
-        loading.dismiss();
-
-        this.navCtrl.navigateRoot('tabs/inventarios');
-
-        /* this.nativeStorage.setItem('google_user', {
-           name: user.displayName,
-           email: user.email,
-           picture: user.imageUrl
-         })
-           .then(() => {
-             this.router.navigate(['/inventarios']);
-           }, error => {
-             console.log(error);
-           })
-         loading.dismiss();
-      }, err => {
-        console.log(err);
-        loading.dismiss();
-        this.presentAlert(JSON.stringify(err));
-
-      });*/
   }
 
   async presentAlert(mensagem: string) {

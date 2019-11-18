@@ -20,7 +20,7 @@ export class TabsPage implements OnInit {
 
   ngOnInit() {
     if (this.authService.userEmail) {
-      //this.userEmail = this.authService.userDetails().email;
+      // this.userEmail = this.authService.userDetails().email;
       this.userEmail = this.authService.userEmail;
     } else if (this.authService.googleUser.email) {
       this.userEmail = this.authService.googleUser.email;
@@ -30,18 +30,13 @@ export class TabsPage implements OnInit {
   }
 
   logout() {
-    //if (this.authService.userEmail) {
-      this.authService.logoutEmailPassword()
-        .then(res => {
-          console.log(res);
-          this.navCtrl.navigateBack('');
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
-    //} else {
-      // fazer logout usando o google
-    //}
+    this.authService.logoutEmailPassword()
+      .then(res => {
+        console.log(res);
+        this.navCtrl.navigateBack('');
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 }

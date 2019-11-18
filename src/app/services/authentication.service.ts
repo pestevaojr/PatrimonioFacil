@@ -42,7 +42,7 @@ export class AuthenticationService {
       if (firebase.auth().currentUser) {
         firebase.auth().signOut()
           .then(() => {
-            console.log("Log Out");
+            console.log('Log Out');
             this.userEmail = '';
             resolve();
           }).catch((error) => {
