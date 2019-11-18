@@ -33,7 +33,8 @@ export class LeituraPage {
     this.barcodeScannerOptions = {
       showTorchButton: true,
       showFlipCameraButton: true,
-      disableSuccessBeep: false
+      disableSuccessBeep: false,
+      prompt: 'Posicione o código de barras dentro da área clara'
     };
 
   }
@@ -132,19 +133,5 @@ export class LeituraPage {
       inventario.bens = [];
     }
     inventario.bens.push({ codigo: codigoBem, conferido: lido });
-  }
-
-  encodedText() {
-    this.barcodeScanner
-      .encode(this.barcodeScanner.Encode.TEXT_TYPE, this.encodeData)
-      .then(
-        encodedData => {
-          console.log(encodedData);
-          this.encodeData = encodedData;
-        },
-        err => {
-          console.log('Error occured : ' + err);
-        }
-      );
   }
 }

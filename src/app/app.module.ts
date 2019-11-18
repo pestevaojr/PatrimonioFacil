@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -13,11 +13,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { Toast } from '@ionic-native/toast/ngx';
 
+import { environment } from 'src/environments/environment';
+import { AuthenticationService } from './services/authentication.service';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
+
+import * as firebase from 'firebase';
+
 const storageConfig: StorageConfig = {
   name: 'patrimonio_db',
   storeName: 'patrimonio_facil',
   driverOrder: ['indexeddb']
 };
+
+firebase.initializeApp(environment.firebase);
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,14 +36,18 @@ const storageConfig: StorageConfig = {
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(storageConfig),
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    AngularFireAuthModule,
+    ReactiveFormsModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     BarcodeScanner,
-    Toast
+    Toast,
+    AuthenticationService,
+    GooglePlus
   ],
   bootstrap: [AppComponent]
 })
