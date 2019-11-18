@@ -109,6 +109,7 @@ export class LeituraPage {
   }
 
   recuperarBem(codigoBem: number, inventario: Inventario) {
+    // tslint:disable-next-line: triple-equals
     const bensLidos = inventario.bens.filter(i => i.codigo == codigoBem);
     console.log('Recuperando bem código: ', codigoBem, '. Bem: ', bensLidos);
     console.log(bensLidos.length);
