@@ -89,7 +89,7 @@ export class LeituraPage {
 
       if (bemLido && bemLido.conferido === false) {
         // bem pré-carregado mas ainda não conferido
-        bemLido.forEach(bem => bem.conferido = true);
+        bemLido.conferido = true;
         mensagem = codigoBemLido + ' - Bem conferido.';
       } else if (bemLido && bemLido.conferido === true) {
         // bem já conferido

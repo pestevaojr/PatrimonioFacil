@@ -18,15 +18,16 @@ import { AuthenticationService } from './services/authentication.service';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
-import * as firebase from 'firebase';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule, AngularFireDatabase } from '@angular/fire/database';
+import { AngularFirestoreModule, AngularFirestore } from '@angular/fire/firestore';
 
-const storageConfig: StorageConfig = {
+
+/*const storageConfig: StorageConfig = {
   name: 'patrimonio_db',
   storeName: 'patrimonio_facil',
   driverOrder: ['indexeddb']
-};
-
-firebase.initializeApp(environment.firebase);
+};*/
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,11 +35,14 @@ firebase.initializeApp(environment.firebase);
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    IonicStorageModule.forRoot(storageConfig),
+    //IonicStorageModule.forRoot(storageConfig),
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    ReactiveFormsModule
+    AngularFirestoreModule,
+    AngularFireDatabaseModule
   ],
   providers: [
     StatusBar,

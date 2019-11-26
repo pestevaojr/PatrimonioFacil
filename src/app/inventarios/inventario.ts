@@ -1,8 +1,10 @@
+import { Bem } from './bem';
+
 export interface Inventario {
-    idLocal?: number;
-    idRemoto?: number;
+    id?: string;
     nome: string;
     dataCriacao?: Date;
     atual?: boolean;
-    bens?: any[];
+    bens?: Bem[];
+    uid?: string;
 }

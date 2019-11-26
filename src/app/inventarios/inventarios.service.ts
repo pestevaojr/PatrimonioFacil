@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { Inventario } from './inventario';
 
-const KEY_INVENTARIOS = 'inventarios';
-const KEY_INVENTARIOS_IDENTITY = 'inventariosIdentity';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,51 +13,58 @@ export class InventariosService {
   inventarioAtual: Inventario;
   inventariosIdentity: number;
 
-  constructor(private _storage: Storage) {
+  constructor(
+    private firestore: AngularFirestore,
+    private authService: AuthenticationService
+  ) {
     this.carregarInventarios();
   }
 
   carregarInventarioAtual(inventarios) {
+    console.log('Inventários: ', inventarios);
     const atuais = inventarios.filter(i => i.atual === true);
     this.inventarioAtual = atuais && atuais.length > 0 ? atuais[0] : this.inventarios[0];
-    this.inventarioAtual.atual = true;
+    console.log('Carregando inventário atual: ', this.inventarioAtual);
   }
 
   carregarInventarios() {
-    this._storage.get(KEY_INVENTARIOS).then(
-      inventarios => {
-        console.log('Obtendo inventários de IndexedDB');
-        if (inventarios) {
-          console.log('Ordenando inventários');
-          this.inventarios = this.ordenarInventarios(inventarios);
-        } else {
-          this.inventarios = [];
-        }
+    this.firestore.collection('inventarios',
+      ref => ref.where('uid', '==', this.authService.userDetails().uid)
+    ).snapshotChanges().subscribe(
+      data => {
+        console.log('Dados do Firebase ', data);
 
+        const inventarios = this.mapearFirebaseParaInventarios(data);
+        this.inventarios = this.ordenarInventarios(inventarios);
         this.carregarInventarioAtual(this.inventarios);
-        this.carregarInventariosIdentity();
-      }
-    );
+        console.log(this.inventarios);
+      }, (err) => console.log(err));
   }
 
-  carregarInventariosIdentity() {
-    this._storage.get(KEY_INVENTARIOS_IDENTITY).then(
-      inventariosIdentity => {
-        console.log('Obtendo inventários identity de IndexedDB');
-        if (inventariosIdentity) {
-          this.inventariosIdentity = inventariosIdentity;
-        } else {
-          this.inventariosIdentity = 0;
-        }
-      }
-    );
+  mapearFirebaseParaInventarios(firebaseData) {
+    console.log('Dados do Firebase ', firebaseData);
+
+    const inventarios = firebaseData.map(e => {
+      console.log('e ', e);
+      console.log('payload ', e.payload);
+      console.log('metadata', e.payload.doc.metadata);
+      return {
+        id: e.payload.doc.id,
+        nome: e.payload.doc.data()['nome'],
+        dataCriacao: e.payload.doc.data()['dataCriacao'].toDate(),
+        atual: e.payload.doc.data()['atual'],
+        bens: e.payload.doc.data()['bens'],
+        uid: e.payload.doc.data()['uid']
+      };
+    });
+    return inventarios;
   }
 
   ordenarInventarios(inventarios) {
     const inventariosOrdenados = inventarios.sort((i1, i2) => {
       if (i1.atual === true) {
         return -1;
-      } else if  (i2.atual === true) {
+      } else if (i2.atual === true) {
         return 1;
       } else {
         return i2.dataCriacao.getMilliseconds() - i1.dataCriacao.getMilliseconds();
@@ -67,33 +73,35 @@ export class InventariosService {
     return inventariosOrdenados;
   }
 
-  salvarInventario(inventarioParaSalvar: Inventario) {
-    if (inventarioParaSalvar.idLocal) {
+  async salvarInventario(inventarioParaSalvar: Inventario) {
+    console.log('Salvando inventário ', inventarioParaSalvar);
+    if (inventarioParaSalvar.id) {
       // atualizar
-      const inventarioPersistido = this.inventarios.filter(i => i.idLocal === inventarioParaSalvar.idLocal);
-      this.replicarPropriedades(inventarioParaSalvar, inventarioPersistido[0]);
+      await this.atualizarInventario(inventarioParaSalvar);
     } else {
       // novo
+      if (this.inventarioAtual) {
+        this.inventarioAtual.atual = false;
+        this.atualizarInventario(this.inventarioAtual);
+      }
       // tornar o novo atual
-      this.inventarios.forEach(i => i.atual = false);
-      inventarioParaSalvar.idLocal = ++this.inventariosIdentity;
       inventarioParaSalvar.atual = true;
-      this.inventarios.push(inventarioParaSalvar);
+      await this.inserirInventario(inventarioParaSalvar);
     }
-    this.inventarios = this.ordenarInventarios(this.inventarios);
-    this.persistirInventarios();
   }
 
-  replicarPropriedades(origem: Inventario, destino: Inventario) {
-    destino.nome = origem.nome;
-    destino.bens = origem.bens;
-    destino.atual = origem.atual;
-    destino.idRemoto = origem.idRemoto;
-    destino.dataCriacao = origem.dataCriacao;
+  async inserirInventario(inventario) {
+    inventario.uid = this.authService.userDetails().uid;
+    console.log('Inserindo inventário: ', inventario);
+    await this.firestore.collection('inventarios').add(inventario).then(
+      () => console.log('Inventário inserido com sucesso'),
+      (err) => console.log('Erro ao inserir inventário', err)
+    );
   }
 
-  persistirInventarios() {
-    this._storage.set(KEY_INVENTARIOS, this.inventarios);
+  async atualizarInventario(inventario: Inventario) {
+    console.log('Atualizando inventário: ', inventario);
+    await this.firestore.doc('inventarios/' + inventario.id).update(inventario);
   }
 
   excluirInventario(inventario: Inventario) {
