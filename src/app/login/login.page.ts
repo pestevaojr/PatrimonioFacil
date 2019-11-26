@@ -56,6 +56,10 @@ export class LoginPage implements OnInit {
         Validators.required
       ])),
     });
+
+    if (this.authService.userDetails()) {
+      this.navCtrl.navigateForward('tabs/inventarios');
+    }
   }
 
   loginEmailPassword(value) {
@@ -66,6 +70,7 @@ export class LoginPage implements OnInit {
         this.navCtrl.navigateForward('tabs/inventarios');
       }, err => {
         this.errorMessage = err.message;
+        console.log(err);
       });
   }
 
