@@ -8,12 +8,12 @@
 </ion-header>
 
 <ion-content>
-  <h2>Bens {{ qtdeBensConferidos }} de {{ qtdeTotalBens }}</h2>
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Bens {{ qtdeBensConferidos }} de {{ qtdeTotalBens }}</ion-card-title>
+      <ion-card-title>Percentual concluído: {{ qtdeBensConferidos / qtdeTotalBens | percent}}</ion-card-title>
+      <ion-card-content>Conferidos {{ qtdeBensConferidos }} bens de um total de {{ qtdeTotalBens }}</ion-card-content>
     </ion-card-header>
-    <ion-item (click)="abrirListaBens()" class="activated">
+    <ion-item (click)="abrirListaBens()" color="secondary">
       <ion-icon name="list" slot="start"></ion-icon>
       <ion-label>Bens</ion-label>
     </ion-item>

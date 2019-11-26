@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Inventario } from '../inventario';
 import { Bem } from '../bem';
 
@@ -12,8 +12,7 @@ export class InventarioDetalhesPage implements OnInit {
 
   inventario: Inventario;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
-  }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -21,6 +20,13 @@ export class InventarioDetalhesPage implements OnInit {
         this.inventario = this.router.getCurrentNavigation().extras.state.inventario;
       }
     });
+  }
+
+  abrirListaBens() {
+    const navigationExtras: NavigationExtras = {
+      state: { bens: this.inventario.bens }
+    };
+    this.router.navigate(['tabs/inventarios/bens'], navigationExtras);
   }
 
   get bensConferidos(): Bem[] {

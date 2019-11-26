@@ -23,11 +23,6 @@ import { AngularFireDatabaseModule, AngularFireDatabase } from '@angular/fire/da
 import { AngularFirestoreModule, AngularFirestore } from '@angular/fire/firestore';
 
 
-/*const storageConfig: StorageConfig = {
-  name: 'patrimonio_db',
-  storeName: 'patrimonio_facil',
-  driverOrder: ['indexeddb']
-};*/
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,7 +30,6 @@ import { AngularFirestoreModule, AngularFirestore } from '@angular/fire/firestor
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    //IonicStorageModule.forRoot(storageConfig),
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
