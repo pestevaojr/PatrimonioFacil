@@ -19,7 +19,7 @@ export class InventarioNovoPage implements OnInit {
 
   salvar() {
     if (this.nome && this.nome.length > 0) {
-      this.service.salvarInventario({nome: this.nome, dataCriacao: new Date()});
+      this.service.salvarInventario({nome: this.nome, dataCriacao: new Date(), bens: []});
       this.navController.navigateRoot('/tabs/inventarios');
     }
   }

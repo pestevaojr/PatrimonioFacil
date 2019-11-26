@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InventariosPage } from './inventarios.page';
 import { InventarioNovoPage } from './inventario-novo/inventario-novo.page';
+import { InventarioDetalhesPage } from './inventario-detalhes/inventario-detalhes.page';
 
 @NgModule({
   imports: [
@@ -13,9 +14,10 @@ import { InventarioNovoPage } from './inventario-novo/inventario-novo.page';
     FormsModule,
     RouterModule.forChild([
       { path: '', component: InventariosPage },
-      { path: 'inventario-novo', component: InventarioNovoPage}
+      { path: 'inventario-novo', component: InventarioNovoPage },
+      { path: 'inventario-detalhes', component: InventarioDetalhesPage }
     ])
   ],
-  declarations: [InventariosPage, InventarioNovoPage]
+  declarations: [InventariosPage, InventarioNovoPage, InventarioDetalhesPage]
 })
-export class InventariosPageModule {}
+export class InventariosPageModule { }
