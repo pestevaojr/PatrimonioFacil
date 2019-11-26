@@ -14,9 +14,7 @@ export class TabsPage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private authService: AuthenticationService
-  ) {
-
-  }
+  ) { }
 
   ngOnInit() {
     if (this.authService.userEmail) {
@@ -24,8 +22,12 @@ export class TabsPage implements OnInit {
       this.userEmail = this.authService.userEmail;
     } else if (this.authService.googleUser.email) {
       this.userEmail = this.authService.googleUser.email;
+    } else if (this.authService.userDetails()) {
+      this.userEmail = this.authService.userDetails().email;
+      console.log(this.authService.userDetails());
     } else {
-      this.navCtrl.navigateBack('/login');
+      console.log('Else');
+      this.navCtrl.navigateBack('');
     }
   }
 
