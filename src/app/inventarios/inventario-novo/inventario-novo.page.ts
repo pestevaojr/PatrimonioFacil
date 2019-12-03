@@ -14,6 +14,7 @@ export class InventarioNovoPage implements OnInit {
 
   nome: string;
   path: string;
+  localizacao: string;
 
   constructor(
     private service: InventariosService,
@@ -27,7 +28,7 @@ export class InventarioNovoPage implements OnInit {
 
   salvar() {
     if (this.nome && this.nome.length > 0) {
-      this.service.salvarInventario({ nome: this.nome, dataCriacao: new Date(), bens: [] });
+      this.service.salvarInventario({nome: this.nome, dataCriacao: new Date(), bens: [], localizacao: this.localizacao});
       this.navController.navigateRoot('/tabs/inventarios');
     }
   }

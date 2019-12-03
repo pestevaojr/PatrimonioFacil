@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar color="primary">
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref="/inventarios" text=""></ion-back-button>
-      </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inventarios" text=""></ion-back-button>
+    </ion-buttons>
     <ion-title>Novo Inventário</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -11,6 +11,10 @@
   <ion-item>
     <ion-label position="floating">Nome</ion-label>
     <ion-input [(ngModel)]="nome"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Localização</ion-label>
+    <ion-input [(ngModel)]="localizacao"></ion-input>
   </ion-item>
   <ion-button expand="block" color="secondary" (click)="importarBens()">
     Importar Bens
