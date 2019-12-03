@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/inventarios" text=""></ion-back-button>
+      <ion-back-button defaultHref="" text=""></ion-back-button>
     </ion-buttons>
     <ion-title>Inventário {{ inventario?.nome }}</ion-title>
   </ion-toolbar>
@@ -11,7 +11,10 @@
   <ion-card>
     <ion-card-header>
       <ion-card-title>Percentual concluído: {{ qtdeBensConferidos / qtdeTotalBens | percent}}</ion-card-title>
-      <ion-card-content>Conferidos {{ qtdeBensConferidos }} bens de um total de {{ qtdeTotalBens }}</ion-card-content>
+      <ion-card-content>
+        Conferidos {{ qtdeBensConferidos }} bens de um total de {{ qtdeTotalBens }}
+        <div *ngIf="inventario?.localizacao">Localização: {{ inventario.localizacao }}</div>
+      </ion-card-content>
     </ion-card-header>
     <ion-item (click)="abrirListaBens()" color="secondary">
       <ion-icon name="list" slot="start"></ion-icon>

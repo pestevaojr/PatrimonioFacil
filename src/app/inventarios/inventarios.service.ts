@@ -54,7 +54,8 @@ export class InventariosService {
         dataCriacao: e.payload.doc.data()['dataCriacao'].toDate(),
         atual: e.payload.doc.data()['atual'],
         bens: e.payload.doc.data()['bens'],
-        uid: e.payload.doc.data()['uid']
+        uid: e.payload.doc.data()['uid'],
+        localizacao: e.payload.doc.data()['localizacao']
       };
     });
     return inventarios;

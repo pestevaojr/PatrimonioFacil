@@ -7,4 +7,5 @@ export interface Inventario {
     atual?: boolean;
     bens?: Bem[];
     uid?: string;
+    localizacao?: string;
 }
