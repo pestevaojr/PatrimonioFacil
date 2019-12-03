@@ -58,7 +58,7 @@ export class LeituraPage {
         } else {
           const codigoBemLido = barcodeData.text;
           this.scannedData = barcodeData;
-          this.marcarBemComoLido(codigoBemLido);
+          this.marcarBemComoLido(+codigoBemLido); // cast string para number
           // escanear o próximo
           this.scanCode();
         }
@@ -79,7 +79,7 @@ export class LeituraPage {
     }
   }
 
-  marcarBemComoLido(codigoBemLido) {
+  marcarBemComoLido(codigoBemLido: number) {
     const inventario: Inventario = this.inventariosService.inventarioAtual;
     console.log('Inventário atual', inventario);
     console.log('Inserindo bem: ', codigoBemLido);

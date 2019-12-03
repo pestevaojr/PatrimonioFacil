@@ -22,7 +22,9 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule, AngularFireDatabase } from '@angular/fire/database';
 import { AngularFirestoreModule, AngularFirestore } from '@angular/fire/firestore';
 
-
+import { FileChooser } from '@ionic-native/file-chooser/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -45,7 +47,10 @@ import { AngularFirestoreModule, AngularFirestore } from '@angular/fire/firestor
     BarcodeScanner,
     Toast,
     AuthenticationService,
-    GooglePlus
+    GooglePlus,
+    FileChooser,
+    FilePath,
+    File
   ],
   bootstrap: [AppComponent]
 })

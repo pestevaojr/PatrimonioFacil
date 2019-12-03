@@ -12,7 +12,11 @@
     <ion-label position="floating">Nome</ion-label>
     <ion-input [(ngModel)]="nome"></ion-input>
   </ion-item>
+  <ion-button expand="block" color="secondary" (click)="importarBens()">
+    Importar Bens
+  </ion-button>
   <ion-button expand="block" (click)="salvar()">
     Salvar
   </ion-button>
+  {{ path }}
 </ion-content>
