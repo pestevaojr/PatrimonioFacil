@@ -73,6 +73,18 @@ export class InventariosService {
     return inventariosOrdenados;
   }
 
+  definirInventarioAtual(novoInventarioAtual) {
+    const antigoInventarioAtual = this.inventarioAtual;
+    if (antigoInventarioAtual) {
+      antigoInventarioAtual.atual = false;
+      this.atualizarInventario(antigoInventarioAtual);
+    }
+    // tornar o novo atual
+    novoInventarioAtual.atual = true;
+    this.atualizarInventario(novoInventarioAtual);
+    return novoInventarioAtual;
+  }
+
   async salvarInventario(inventarioParaSalvar: Inventario) {
     console.log('Salvando inventário ', inventarioParaSalvar);
     if (inventarioParaSalvar.id) {
