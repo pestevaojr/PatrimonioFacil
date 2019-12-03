@@ -1,15 +1,30 @@
 <ion-header>
   <ion-toolbar color="primary">
-      <ion-buttons slot="start">
-          <ion-back-button text=""></ion-back-button>
-        </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-back-button text=""></ion-back-button>
+    </ion-buttons>
     <ion-title>Bens</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-item *ngFor="let bem of bens">
+  <ion-item>
+    <ion-segment (ionChange)="filtrarBens($event)" value="conferidos">
+      <ion-segment-button value="conferidos">
+        <ion-label>Conferidos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="nao-conferidos">
+        <ion-label>Pendentes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="todos">
+        <ion-label>Todos</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-item>
+  <ion-item *ngFor="let bem of bensLista">
     <ion-label>{{ bem.codigo }}</ion-label>
-    <ion-chip *ngIf="bem.conferido" color="success"><ion-label>Conferido</ion-label></ion-chip>
+    <ion-chip *ngIf="bem.conferido" color="success">
+      <ion-label>Conferido</ion-label>
+    </ion-chip>
   </ion-item>
 </ion-content>

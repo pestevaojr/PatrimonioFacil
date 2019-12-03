@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class BensPage implements OnInit {
 
   bens: Bem[] = [];
+  bensLista: Bem[] = [];
 
   constructor(private route: ActivatedRoute, private router: Router) { }
 
@@ -19,6 +20,20 @@ export class BensPage implements OnInit {
         this.bens = this.router.getCurrentNavigation().extras.state.bens;
       }
     });
+
+    this.bensLista = this.bensConferidos;
+  }
+
+  filtrarBens(event) {
+    console.log(event);
+    const filtro = event.target.value;
+    if (filtro === 'conferidos') {
+      this.bensLista = this.bensConferidos;
+    } else if (filtro === 'nao-conferidos') {
+      this.bensLista = this.bensNaoConferidos;
+    } else {
+      this.bensLista = this.todosBens;
+    }
   }
 
   get bensConferidos(): Bem[] {
@@ -37,4 +52,7 @@ export class BensPage implements OnInit {
     return this.todosBens.length;
   }
 
+  get bensNaoConferidos(): Bem[] {
+    return this.bens.filter(bem => !bem.conferido);
+  }
 }
