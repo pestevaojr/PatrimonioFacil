@@ -7,12 +7,15 @@ import { InventariosPage } from './inventarios.page';
 import { InventarioNovoPage } from './inventario-novo/inventario-novo.page';
 import { InventarioDetalhesPage } from './inventario-detalhes/inventario-detalhes.page';
 import { BensPage } from './bens/bens.page';
+import { Ng2GoogleChartsModule } from 'ng2-google-charts';
+
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
+    Ng2GoogleChartsModule,
     RouterModule.forChild([
       { path: '', component: InventariosPage },
       { path: 'inventario-novo', component: InventarioNovoPage },
