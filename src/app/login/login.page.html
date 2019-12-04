@@ -5,6 +5,7 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-item>Usuário: {{ userDetails?.email }}</ion-item>
   <form class="form" [formGroup]="validationsForm" (ngSubmit)="loginEmailPassword(validationsForm.value)">
 
     <ion-item>

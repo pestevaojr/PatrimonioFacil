@@ -62,6 +62,10 @@ export class LoginPage implements OnInit {
     }
   }
 
+  get userDetais() {
+    return this.authService.userDetails();
+  }
+
   loginEmailPassword(value) {
     this.authService.loginEmailPassword(value.email, value.password)
       .then(res => {

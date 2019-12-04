@@ -67,6 +67,7 @@ export class LeituraPage {
         console.log('Error', err);
       });
   }
+
   async presentToast(mensagem: string) {
     if (this.isCordova) {
       this.toastNative.show(mensagem, '2000', 'center').subscribe();
