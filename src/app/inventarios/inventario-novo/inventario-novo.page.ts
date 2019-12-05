@@ -8,6 +8,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 import * as XLSX from 'xlsx';
 import { Bem } from '../bem';
+import { Inventario } from '../inventario';
 
 @Component({
   selector: 'app-inventario-novo',
@@ -17,8 +18,8 @@ import { Bem } from '../bem';
 export class InventarioNovoPage implements OnInit {
 
   nome: string;
-  localizacao: string;
-  bens: Bem[];
+  localizacao: string = null;
+  bens: Bem[] = [];
 
   isCordova: boolean;
 
@@ -39,12 +40,13 @@ export class InventarioNovoPage implements OnInit {
 
   salvar() {
     if (this.nome && this.nome.length > 0) {
-      this.service.salvarInventario({
+      const novoInventario  = {
         nome: this.nome,
         dataCriacao: new Date(),
         bens: this.bens,
         localizacao: this.localizacao
-      });
+      };
+      this.service.salvarInventario(novoInventario);
       this.navController.navigateRoot('/tabs/inventarios');
     }
   }

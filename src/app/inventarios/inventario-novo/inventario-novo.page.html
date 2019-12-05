@@ -19,11 +19,7 @@
   <ion-button expand="block" color="secondary" (click)="importarBens()">
     Importar Bens
   </ion-button>
-  <ion-button expand="block" (click)="salvar()">
+  <ion-button expand="block" (click)="salvar()" [disabled]="!nome">
     Salvar
   </ion-button>
-  <div>Path: {{ path }}</div>
-  <div>File Name: {{ fileName }}</div>
-  <div>Directory: {{ directory }}</div>
-  <div>{{ excel }}</div>
 </ion-content>
