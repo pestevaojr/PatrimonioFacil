@@ -57,9 +57,11 @@ export class LoginPage implements OnInit {
       ])),
     });
 
+    /*console.log('Detalhes do usuário: ', this.authService.userDetails());
+
     if (this.authService.userDetails()) {
       this.navCtrl.navigateForward('tabs/inventarios');
-    }
+    }*/
   }
 
   get userDetais() {
