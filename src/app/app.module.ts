@@ -37,7 +37,7 @@ import { File } from '@ionic-native/file/ngx';
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireDatabaseModule
   ],
   providers: [
