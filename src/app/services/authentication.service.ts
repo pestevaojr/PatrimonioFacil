@@ -4,6 +4,7 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { GoogleUser } from '../login/google-user';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { NavController } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -18,26 +19,22 @@ export class AuthenticationService {
     private googlePlus: GooglePlus,
     private fireAuth: AngularFireAuth,
     private navCtrl: NavController) {
+
+    console.log('Instanciando AuthenticationService');
     this.fireAuth.auth.onAuthStateChanged(user => {
       if (user) {
         console.log('Usuário logado: ', user);
         this.navCtrl.navigateRoot('/tabs/inventarios');
       } else {
         console.log('Não logado');
-        this.navCtrl.navigateRoot('/login');
+        this.navCtrl.navigateRoot('');
       }
       this.user = user;
     });
-
   }
 
   registerUser(email, password) {
-    return new Promise<any>((resolve, reject) => {
-      this.fireAuth.auth.createUserWithEmailAndPassword(email, password)
-        .then(
-          res => resolve(res),
-          err => reject(err));
-    });
+    return this.fireAuth.auth.createUserWithEmailAndPassword(email, password);
   }
 
   loginEmailPassword(email, password) {
@@ -58,17 +55,18 @@ export class AuthenticationService {
 
     return this.fireAuth.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(
       () => new Promise<any>((resolve, reject) => {
+        console.log('Entrou no setPersistence');
         this.fireAuth.auth.signInWithEmailAndPassword(email, password)
           .then(
             res => {
               this.userEmail = email;
+              console.log('Usuário', res);
               resolve(res);
-              console.log(res);
             },
             err => {
               this.userEmail = '';
-              reject(err);
               console.log(err);
+              reject(err);
             });
       }));
   }
@@ -80,6 +78,8 @@ export class AuthenticationService {
           .then(() => {
             console.log('Log Out');
             this.userEmail = '';
+            this.user = undefined;
+            this.googleUser = undefined;
             resolve();
           }).catch((error) => {
             reject(error);
@@ -119,7 +119,7 @@ export class AuthenticationService {
   }
 
   userDetails() {
-    //return this.fireAuth.auth.currentUser;
+    // return this.fireAuth.auth.currentUser;
     return this.user;
   }
 }

@@ -7,29 +7,12 @@ import { AuthenticationService } from '../services/authentication.service';
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss']
 })
-export class TabsPage implements OnInit {
-
-  userEmail: string;
+export class TabsPage {
 
   constructor(
     private navCtrl: NavController,
     private authService: AuthenticationService
   ) { }
-
-  ngOnInit() {
-    if (this.authService.userEmail) {
-      // this.userEmail = this.authService.userDetails().email;
-      this.userEmail = this.authService.userEmail;
-    } else if (this.authService.googleUser.email) {
-      this.userEmail = this.authService.googleUser.email;
-    } else if (this.authService.userDetails()) {
-      this.userEmail = this.authService.userDetails().email;
-      console.log(this.authService.userDetails());
-    } else {
-      console.log('Else');
-      this.navCtrl.navigateBack('');
-    }
-  }
 
   logout() {
     this.authService.logoutEmailPassword()
@@ -40,5 +23,20 @@ export class TabsPage implements OnInit {
       .catch(error => {
         console.log(error);
       });
+  }
+
+  get userEmail() {
+    if (this.authService.userEmail) {
+      console.log('UserEmail', this.authService.userEmail);
+      return this.authService.userEmail;
+    } else if (this.authService.googleUser.email) {
+      console.log('Google');
+      return this.authService.googleUser.email;
+    } else if (this.authService.userDetails()) {
+      console.log('User Details', this.authService.userDetails());
+      return this.authService.userDetails().email;
+    }
+
+    return '';
   }
 }

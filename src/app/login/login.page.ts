@@ -18,6 +18,7 @@ export class LoginPage implements OnInit {
   isCordova: boolean;
   validationsForm: FormGroup;
   errorMessage = '';
+  email: string;
   validationMessages = {
     email: [
       { type: 'required', message: 'Email é obrigatório.' },
@@ -57,11 +58,10 @@ export class LoginPage implements OnInit {
       ])),
     });
 
-    /*console.log('Detalhes do usuário: ', this.authService.userDetails());
-
-    if (this.authService.userDetails()) {
-      this.navCtrl.navigateForward('tabs/inventarios');
-    }*/
+    console.log('Detalhes do usuário: ', this.userDetais);
+    if (this.userDetais) {
+      this.email = this.userDetais.email;
+    }
   }
 
   get userDetais() {
@@ -106,9 +106,7 @@ export class LoginPage implements OnInit {
   async presentAlert(mensagem: string) {
     const alert = await this.alertCtrl.create({
       message: mensagem,
-      buttons: ['OK']/*,
-      subHeader: '',
-      buttons: ['Dismiss']*/
+      buttons: ['OK']
     });
     await alert.present();
   }
