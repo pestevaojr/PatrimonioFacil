@@ -22,9 +22,13 @@
       <ion-icon name="list" slot="start"></ion-icon>
       <ion-label>Bens</ion-label>
     </ion-item>
-    <ion-item *ngIf="!inventario.atual" color="danger" (click)="tornarAtual()">
+    <ion-item *ngIf="!inventario.atual" color="warning" (click)="tornarAtual()">
       <ion-icon name="star" slot="start"></ion-icon>
       <ion-label>Tornar atual</ion-label>
+    </ion-item>
+    <ion-item color="danger" (click)="excluirInventario()">
+      <ion-icon name="trash" slot="start"></ion-icon>
+      <ion-label>Excluir</ion-label>
     </ion-item>
   </ion-card>
 
@@ -32,9 +36,13 @@
     <ion-card-header>
       <ion-card-title>Inventário vazio <ion-chip *ngIf="inventario.atual" color="danger"><ion-label>Atual</ion-label></ion-chip></ion-card-title>
     </ion-card-header>
-    <ion-item *ngIf="!inventario.atual" color="danger" (click)="tornarAtual()">
+    <ion-item *ngIf="!inventario.atual" color="warning" (click)="tornarAtual()">
       <ion-icon name="star" slot="start"></ion-icon>
       <ion-label>Tornar atual</ion-label>
+    </ion-item>
+    <ion-item color="danger" (click)="excluirInventario()">
+      <ion-icon name="trash" slot="start"></ion-icon>
+      <ion-label>Excluir</ion-label>
     </ion-item>
   </ion-card>
 </ion-content>

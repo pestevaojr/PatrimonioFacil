@@ -13,8 +13,7 @@ export class InventariosPage {
 
   constructor(
     private service: InventariosService,
-    private router: Router,
-    private navCtrl: NavController
+    private router: Router
     ) {}
 
   get inventarios() {

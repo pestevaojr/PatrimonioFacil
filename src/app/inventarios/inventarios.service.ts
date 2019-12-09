@@ -118,7 +118,16 @@ export class InventariosService {
   }
 
   excluirInventario(inventario: Inventario) {
-
+    return this.firestore.doc('inventarios/' + inventario.id).delete().then(() => {
+      const inventariosRestantes = this.ordenarInventarios(
+        this.inventarios.filter(i => inventario.id !== i.id)
+      );
+      if (inventariosRestantes.length > 0) {
+        const atual = inventariosRestantes[0];
+        atual.atual = true;
+        this.atualizarInventario(atual);
+      }
+    });
   }
 
   obterInventarios() {

@@ -4,6 +4,7 @@ import { Inventario } from '../inventario';
 import { Bem } from '../bem';
 import { GoogleChartInterface } from 'ng2-google-charts/google-charts-interfaces';
 import { InventariosService } from '../inventarios.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-inventario-detalhes',
@@ -18,7 +19,8 @@ export class InventarioDetalhesPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private service: InventariosService
+    private service: InventariosService,
+    private navCtrl: NavController
   ) { }
 
   ngOnInit() {
@@ -58,6 +60,13 @@ export class InventarioDetalhesPage implements OnInit {
 
   tornarAtual() {
     this.inventario = this.service.definirInventarioAtual(this.inventario);
+  }
+
+  excluirInventario() {
+    this.service.excluirInventario(this.inventario).then(
+      () => this.navCtrl.navigateBack('tabs/inventarios')
+    );
+
   }
 
   get bensConferidos(): Bem[] {
