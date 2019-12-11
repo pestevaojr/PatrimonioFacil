@@ -3,6 +3,7 @@ import { Inventario } from './inventario';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthenticationService } from '../services/authentication.service';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +16,13 @@ export class InventariosService {
 
   constructor(
     private firestore: AngularFirestore,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private alertCtrl: AlertController
   ) {
     this.carregarInventarios();
   }
 
   carregarInventarioAtual(inventarios) {
-    console.log('Inventários: ', inventarios);
     const atuais = inventarios.filter(i => i.atual === true);
     this.inventarioAtual = atuais && atuais.length > 0 ? atuais[0] : this.inventarios[0];
     console.log('Carregando inventário atual: ', this.inventarioAtual);
@@ -32,8 +33,6 @@ export class InventariosService {
       ref => ref.where('uid', '==', this.authService.userDetails().uid)
     ).snapshotChanges().subscribe(
       data => {
-        console.log('Dados do Firebase ', data);
-
         const inventarios = this.mapearFirebaseParaInventarios(data);
         this.inventarios = this.ordenarInventarios(inventarios);
         this.carregarInventarioAtual(this.inventarios);
@@ -45,9 +44,6 @@ export class InventariosService {
     console.log('Dados do Firebase ', firebaseData);
 
     const inventarios = firebaseData.map(e => {
-      console.log('e ', e);
-      console.log('payload ', e.payload);
-      console.log('metadata', e.payload.doc.metadata);
       return {
         id: e.payload.doc.id,
         nome: e.payload.doc.data()['nome'],
@@ -93,13 +89,13 @@ export class InventariosService {
       await this.atualizarInventario(inventarioParaSalvar);
     } else {
       // novo
+      // tornar o novo atual
+      inventarioParaSalvar.atual = true;
+      await this.inserirInventario(inventarioParaSalvar);
       if (this.inventarioAtual) {
         this.inventarioAtual.atual = false;
         this.atualizarInventario(this.inventarioAtual);
       }
-      // tornar o novo atual
-      inventarioParaSalvar.atual = true;
-      await this.inserirInventario(inventarioParaSalvar);
     }
   }
 
@@ -107,9 +103,20 @@ export class InventariosService {
     inventario.uid = this.authService.userDetails().uid;
     console.log('Inserindo inventário: ', inventario);
     await this.firestore.collection('inventarios').add(inventario).then(
-      () => console.log('Inventário inserido com sucesso'),
+      (res) => {
+        console.log('Inventário inserido com sucesso. Id: ', res.id);
+        this.presentAlert('Inventário: ' + JSON.stringify(res.id));
+      },
       (err) => console.log('Erro ao inserir inventário', err)
     );
+  }
+
+  async presentAlert(mensagem: string) {
+    const alert = await this.alertCtrl.create({
+      message: mensagem,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 
   async atualizarInventario(inventario: Inventario) {
