@@ -56,9 +56,12 @@ export class LeituraPage {
           this.scanCancelado = true;
           this.presentToast('Cancelado');
         } else {
-          const codigoBemLido = barcodeData.text;
-          this.scannedData = barcodeData;
-          this.marcarBemComoLido(+codigoBemLido); // cast string para number
+          const codigoBemLido = +barcodeData.text;
+          if (this.validarCodigo(codigoBemLido)) {
+            this.marcarBemComoLido(codigoBemLido); // cast string para number
+          } else {
+            this.presentToast('Código inválido: ' + barcodeData.text);
+          }
           // escanear o próximo
           this.scanCode();
         }
@@ -66,6 +69,13 @@ export class LeituraPage {
       .catch(err => {
         console.log('Error', err);
       });
+  }
+
+  validarCodigo(codigo) {
+    if (codigo == NaN) {
+      return false;
+    }
+    return true;
   }
 
   async presentToast(mensagem: string) {

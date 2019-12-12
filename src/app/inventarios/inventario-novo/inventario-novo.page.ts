@@ -9,6 +9,7 @@ import { Toast } from '@ionic-native/toast/ngx';
 import * as XLSX from 'xlsx';
 import { Bem } from '../bem';
 import { Inventario } from '../inventario';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-inventario-novo',
@@ -17,9 +18,16 @@ import { Inventario } from '../inventario';
 })
 export class InventarioNovoPage implements OnInit {
 
-  nome: string;
-  localizacao: string = null;
   bens: Bem[] = [];
+  validationsForm: FormGroup;
+  errorMessage = '';
+  successMessage = '';
+
+  validationMessages = {
+    nome: [
+      { type: 'required', message: 'O nome é obrigatório.' }
+    ]
+  };
 
   isCordova: boolean;
 
@@ -38,17 +46,20 @@ export class InventarioNovoPage implements OnInit {
     this.isCordova = this.platform.is('cordova');
   }
 
-  salvar() {
-    if (this.nome && this.nome.length > 0) {
-      const novoInventario  = {
-        nome: this.nome,
-        dataCriacao: new Date(),
-        bens: this.bens,
-        localizacao: this.localizacao
-      };
-      this.service.salvarInventario(novoInventario);
-      this.navController.navigateRoot('/tabs/inventarios');
+  salvar(formValue) {
+    const nome = formValue.nome;
+    let localizacao = formValue.localizacao;
+    if (localizacao == undefined || localizacao.length == 0) {
+      localizacao = null;
     }
+    const novoInventario = {
+      nome: nome,
+      dataCriacao: new Date(),
+      bens: this.bens,
+      localizacao: localizacao
+    };
+    this.service.salvarInventario(novoInventario);
+    this.navController.navigateRoot('/tabs/inventarios');
   }
 
   importarBens() {
@@ -59,8 +70,6 @@ export class InventarioNovoPage implements OnInit {
         const fileName = resolvedNativePath.substring(resolvedNativePath.lastIndexOf('/') + 1);
         const directory = resolvedNativePath.substring(0, resolvedNativePath.lastIndexOf('/'));
         this.file.readAsBinaryString(directory, fileName).then((data) => {
-          this.presentToast('Entrou no then.');
-
           const bstr: string = data;
           const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
           const wsname: string = wb.SheetNames[0];

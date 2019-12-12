@@ -8,18 +8,29 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-item>
-    <ion-label position="floating">Nome</ion-label>
-    <ion-input [(ngModel)]="nome"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Localização</ion-label>
-    <ion-input [(ngModel)]="localizacao"></ion-input>
-  </ion-item>
-  <ion-button expand="block" color="secondary" (click)="importarBens()">
-    Importar Bens
-  </ion-button>
-  <ion-button expand="block" (click)="salvar()">
-    Salvar
-  </ion-button>
+  <form class="form" [formGroup]="validationsForm" (ngSubmit)="salvar(validationsForm.value)">
+    <ion-item>
+      <ion-label position="floating">Nome</ion-label>
+      <ion-input formControlName="nome"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.nome">
+        <div class="error-message"
+          *ngIf="validationsForm.get('nome').hasError(validation.type) && (validationsForm.get('nome').dirty || validationsForm.get('nome').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+    <ion-item>
+      <ion-label position="floating">Localização</ion-label>
+      <ion-input formControlName="localizacao"></ion-input>
+    </ion-item>
+    <ion-button expand="block" color="secondary" (click)="importarBens()">
+      Importar Bens
+    </ion-button>
+    <ion-button expand="block" class="submit-btn" type="submit" [disabled]="!validationsForm.valid">
+      Salvar
+    </ion-button>
+    <label class="error-message">{{ errorMessage }}</label>
+  </form>
 </ion-content>
