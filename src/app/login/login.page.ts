@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { NavController, Platform, AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { AuthenticationService } from '../services/authentication.service';
-import { Router } from '@angular/router';
 
-// import { NativeStorage } from '@ionic-native/native-storage/ngx';
-import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Toast } from '@ionic-native/toast/ngx';
 
 @Component({
@@ -16,9 +13,8 @@ import { Toast } from '@ionic-native/toast/ngx';
 export class LoginPage implements OnInit {
 
   isCordova: boolean;
-  validationsForm: FormGroup;
+  loginForm: FormGroup;
   errorMessage = '';
-  email: string;
   validationMessages = {
     email: [
       { type: 'required', message: 'Email é obrigatório.' },
@@ -35,8 +31,6 @@ export class LoginPage implements OnInit {
     private navCtrl: NavController,
     private authService: AuthenticationService,
     private formBuilder: FormBuilder,
-    private googlePlus: GooglePlus,
-    // private nativeStorage: NativeStorage,
     public loadingController: LoadingController,
     private toastController: ToastController,
     private toastNative: Toast,
@@ -47,24 +41,22 @@ export class LoginPage implements OnInit {
   ngOnInit() {
     this.isCordova = this.platform.is('cordova');
 
-    this.validationsForm = this.formBuilder.group({
-      email: new FormControl('', Validators.compose([
+    const email = this.userDetails ? this.userDetails.email : '';
+    this.loginForm = this.formBuilder.group({
+      email: ['', Validators.compose([
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-      ])),
-      password: new FormControl('', Validators.compose([
+      ])],
+      password: ['', Validators.compose([
         Validators.minLength(5),
         Validators.required
-      ])),
+      ])],
     });
 
-    console.log('Detalhes do usuário: ', this.userDetais);
-    if (this.userDetais) {
-      this.email = this.userDetais.email;
-    }
+    console.log('Detalhes do usuário: ', this.userDetails);
   }
 
-  get userDetais() {
+  get userDetails() {
     return this.authService.userDetails();
   }
 

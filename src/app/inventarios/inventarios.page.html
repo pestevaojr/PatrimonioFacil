@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
   <ion-list>
     <ion-item *ngFor="let inventario of inventarios" (click)="abrirDetalhesInventario(inventario)">
       <ion-label>{{inventario.nome}}</ion-label>
@@ -13,7 +13,7 @@
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button routerLink="inventario-novo" routerDirection="forward">
+    <ion-fab-button (click)="abrirNovoInventario()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

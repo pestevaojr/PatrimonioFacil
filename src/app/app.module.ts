@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicModule, IonicRouteStrategy, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
@@ -33,8 +33,6 @@ import { File } from '@ionic-native/file/ngx';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence(),
@@ -50,7 +48,8 @@ import { File } from '@ionic-native/file/ngx';
     GooglePlus,
     FileChooser,
     FilePath,
-    File
+    File,
+    NavController
   ],
   bootstrap: [AppComponent]
 })

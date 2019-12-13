@@ -62,11 +62,9 @@ export class InventarioDetalhesPage implements OnInit {
     this.inventario = this.service.definirInventarioAtual(this.inventario);
   }
 
-  excluirInventario() {
-    this.service.excluirInventario(this.inventario).then(
-      () => this.navCtrl.navigateBack('tabs/inventarios')
-    );
-
+  async excluirInventario() {
+    this.service.excluirInventario(this.inventario);
+    this.navCtrl.navigateBack('tabs/inventarios');
   }
 
   get bensConferidos(): Bem[] {

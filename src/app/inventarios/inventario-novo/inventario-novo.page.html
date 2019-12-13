@@ -1,36 +1,34 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/inventarios" text=""></ion-back-button>
+      <ion-back-button text=""></ion-back-button>
     </ion-buttons>
     <ion-title>Novo Inventário</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <form class="form" [formGroup]="validationsForm" (ngSubmit)="salvar(validationsForm.value)">
+  <form class="form" [formGroup]="formNovoInventario" (ngSubmit)="salvar(formNovoInventario.value)">
+
     <ion-item>
       <ion-label position="floating">Nome</ion-label>
-      <ion-input formControlName="nome"></ion-input>
+      <ion-input formControlName="nome" type="text" required></ion-input>
     </ion-item>
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validationMessages.nome">
-        <div class="error-message"
-          *ngIf="validationsForm.get('nome').hasError(validation.type) && (validationsForm.get('nome').dirty || validationsForm.get('nome').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
+    <ion-item
+      *ngIf="formNovoInventario.get('nome').hasError('required') && (formNovoInventario.get('nome').dirty || formNovoInventario.get('nome').touched)">
+      <p class="error-message">O nome é obrigatório.</p>
+    </ion-item>
+
     <ion-item>
       <ion-label position="floating">Localização</ion-label>
       <ion-input formControlName="localizacao"></ion-input>
     </ion-item>
+
     <ion-button expand="block" color="secondary" (click)="importarBens()">
       Importar Bens
     </ion-button>
-    <ion-button expand="block" class="submit-btn" type="submit" [disabled]="!validationsForm.valid">
+    <ion-button expand="block" class="submit-btn" type="submit" [disabled]="!formNovoInventario.valid">
       Salvar
     </ion-button>
-    <label class="error-message">{{ errorMessage }}</label>
   </form>
 </ion-content>

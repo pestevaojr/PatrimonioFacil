@@ -6,10 +6,10 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
   <ion-item>
     <ion-label position="floating">Código do bem</ion-label>
-    <ion-input [(ngModel)]='codigoBemManual' type='number'></ion-input>
+    <ion-input [(ngModel)]="codigoBemManual" type="number"></ion-input>
   </ion-item>
   
   <ion-button expand="block" (click)="conferirBemManualmente()">
@@ -19,25 +19,4 @@
   <ion-button expand="block" (click)="scanCode()" color="secondary">
     Escanear
   </ion-button>
-  <!--
-  <ion-button (click)="scanCode()">
-    Escanear
-  </ion-button>
- 
-  <div *ngIf="scannedData">
-    <p>
-      Texto escaneado : <b>{{ scannedData["text"] }}</b>
-    </p>
-    <p>
-      Formato : <b>{{ scannedData["format"] }}</b>
-    </p>
-  </div>
- 
-  <h1>Enter Value to Create QR code</h1>
-  <ion-input type="text" [(ngModel)]="encodeData"></ion-input>
- 
-  <ion-button (click)="encodedText()">
-    Criar QR
-  </ion-button>
--->
 </ion-content>

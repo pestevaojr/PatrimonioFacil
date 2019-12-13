@@ -9,6 +9,8 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class TabsPage {
 
+  private user;
+
   constructor(
     private navCtrl: NavController,
     private authService: AuthenticationService
@@ -26,17 +28,14 @@ export class TabsPage {
   }
 
   get userEmail() {
-    if (this.authService.userEmail) {
-      console.log('UserEmail', this.authService.userEmail);
-      return this.authService.userEmail;
-    } else if (this.authService.googleUser.email) {
-      console.log('Google');
-      return this.authService.googleUser.email;
-    } else if (this.authService.userDetails()) {
-      console.log('User Details', this.authService.userDetails());
-      return this.authService.userDetails().email;
+    if (!this.user) {
+      if (this.authService.userDetails()) {
+        this.user = this.authService.userDetails();
+        console.log('User Details', this.authService.userDetails());
+      } else {
+        return '';
+      }
     }
-
-    return '';
+    return this.user.email;
   }
 }

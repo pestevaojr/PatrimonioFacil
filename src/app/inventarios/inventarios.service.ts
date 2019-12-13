@@ -36,7 +36,7 @@ export class InventariosService {
         const inventarios = this.mapearFirebaseParaInventarios(data);
         this.inventarios = this.ordenarInventarios(inventarios);
         this.carregarInventarioAtual(this.inventarios);
-        console.log(this.inventarios);
+        console.log('Inventários carregados.', this.inventarios);
       }, (err) => console.log(err));
   }
 
@@ -82,20 +82,24 @@ export class InventariosService {
     return novoInventarioAtual;
   }
 
-  async salvarInventario(inventarioParaSalvar: Inventario) {
+  salvarInventario(inventarioParaSalvar: Inventario) {
     console.log('Salvando inventário ', inventarioParaSalvar);
     if (inventarioParaSalvar.id) {
       // atualizar
-      await this.atualizarInventario(inventarioParaSalvar);
+      this.atualizarInventario(inventarioParaSalvar);
     } else {
       // novo
+
       // tornar o novo atual
+      const inventarioAtual = this.inventarioAtual;
       inventarioParaSalvar.atual = true;
-      await this.inserirInventario(inventarioParaSalvar);
-      if (this.inventarioAtual) {
-        this.inventarioAtual.atual = false;
-        this.atualizarInventario(this.inventarioAtual);
+      this.inserirInventario(inventarioParaSalvar);
+
+      if (inventarioAtual) {
+        inventarioAtual.atual = false;
+        this.atualizarInventario(inventarioAtual);
       }
+
     }
   }
 
@@ -125,19 +129,19 @@ export class InventariosService {
   }
 
   excluirInventario(inventario: Inventario) {
-    return this.firestore.doc('inventarios/' + inventario.id).delete().then(() => {
-      const inventariosRestantes = this.ordenarInventarios(
-        this.inventarios.filter(i => inventario.id !== i.id)
-      );
-      if (inventariosRestantes.length > 0) {
-        const atual = inventariosRestantes[0];
-        atual.atual = true;
-        this.atualizarInventario(atual);
-      }
-    });
+    this.firestore.doc('inventarios/' + inventario.id).delete();
+    const inventariosRestantes = this.ordenarInventarios(
+      this.inventarios.filter(i => inventario.id !== i.id)
+    );
+    if (inventariosRestantes.length > 0) {
+      const atual = inventariosRestantes[0];
+      atual.atual = true;
+      this.atualizarInventario(atual);
+    }
   }
 
   obterInventarios() {
+    console.log('Obtendo inventários do serviço', this.inventarios);
     return this.inventarios;
   }
 }

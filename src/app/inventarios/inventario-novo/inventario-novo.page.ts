@@ -9,7 +9,7 @@ import { Toast } from '@ionic-native/toast/ngx';
 import * as XLSX from 'xlsx';
 import { Bem } from '../bem';
 import { Inventario } from '../inventario';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-inventario-novo',
@@ -19,15 +19,9 @@ import { FormGroup } from '@angular/forms';
 export class InventarioNovoPage implements OnInit {
 
   bens: Bem[] = [];
-  validationsForm: FormGroup;
+  formNovoInventario: FormGroup;
   errorMessage = '';
   successMessage = '';
-
-  validationMessages = {
-    nome: [
-      { type: 'required', message: 'O nome é obrigatório.' }
-    ]
-  };
 
   isCordova: boolean;
 
@@ -40,26 +34,38 @@ export class InventarioNovoPage implements OnInit {
     private platform: Platform,
     private toastController: ToastController,
     private toastNative: Toast,
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit() {
     this.isCordova = this.platform.is('cordova');
+
+    this.formNovoInventario = this.formBuilder.group({
+      nome: ['', Validators.required],
+      localizacao: ['']
+    });
   }
 
-  salvar(formValue) {
-    const nome = formValue.nome;
-    let localizacao = formValue.localizacao;
-    if (localizacao == undefined || localizacao.length == 0) {
-      localizacao = null;
+  async salvar(formValue) {
+    if (this.formNovoInventario.valid) {
+      const nome = formValue.nome;
+      let localizacao = formValue.localizacao;
+      if (localizacao == undefined || localizacao.length == 0) {
+        localizacao = null;
+      }
+      const novoInventario = {
+        nome: nome,
+        dataCriacao: new Date(),
+        bens: this.bens,
+        localizacao: localizacao
+      };
+
+      await this.service.salvarInventario(novoInventario);
+      
+      this.navController.navigateRoot('/tabs/inventarios');      
+    } else {
+      this.errorMessage = 'O nome é obrigatório!';
     }
-    const novoInventario = {
-      nome: nome,
-      dataCriacao: new Date(),
-      bens: this.bens,
-      localizacao: localizacao
-    };
-    this.service.salvarInventario(novoInventario);
-    this.navController.navigateRoot('/tabs/inventarios');
   }
 
   importarBens() {

@@ -72,7 +72,7 @@ export class LeituraPage {
   }
 
   validarCodigo(codigo) {
-    if (codigo == NaN) {
+    if (isNaN(codigo)) {
       return false;
     }
     return true;

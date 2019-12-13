@@ -26,4 +26,8 @@ export class InventariosPage {
     };
     this.router.navigate(['tabs/inventarios/inventario-detalhes'], navigationExtras);
   }
+
+  abrirNovoInventario() {
+    this.router.navigate(['tabs/inventarios/inventario-novo']);
+  }
 }
