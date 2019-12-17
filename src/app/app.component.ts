@@ -28,7 +28,7 @@ export class AppComponent {
       } else {
         this.statusBar.styleDefault();
       }
-      this.splashScreen.hide();
+      //this.splashScreen.hide();
       console.log('Aplicação iniciada');
     });
   }

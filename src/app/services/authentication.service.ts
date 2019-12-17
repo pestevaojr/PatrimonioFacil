@@ -19,19 +19,19 @@ export class AuthenticationService {
     private fireAuth: AngularFireAuth,
     private navCtrl: NavController,
     private ngZone: NgZone,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController,
+    private splashScreen: SplashScreen) {
 
     console.log('Instanciando AuthenticationService');
     this.fireAuth.auth.onAuthStateChanged(user => this.ngZone.run(() => {
       if (user) {
         console.log('Usuário logado: ', user);
-        this.navCtrl.navigateForward('/tabs/inventarios');
+        this.navCtrl.navigateRoot('/tabs/inventarios').then(() => this.splashScreen.hide());
       } else {
         console.log('Não logado');
-        this.navCtrl.navigateForward('');
+        this.navCtrl.navigateRoot('').then(() => this.splashScreen.hide());
       }
-      this.user = user;
-      
+      this.user = user;      
     }));
   }
 

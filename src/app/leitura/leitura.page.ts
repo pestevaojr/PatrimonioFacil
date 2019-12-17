@@ -39,10 +39,18 @@ export class LeituraPage {
 
   }
 
+  ionViewCanLeave() {
+    const podeSair = !this.scanCancelado;
+    
+    this.scanCancelado = false;
+    this.presentToast('Pode sair: ' + podeSair);
+    return podeSair;
+  }
+
   ionViewWillEnter() {
     console.log('Inicializando o barcode scanner');
 
-    if (this.isCordova && this.scanCancelado === false) {
+    if (this.isCordova && this.scanCancelado === false && !!this.inventarioAtual) {
       this.scanCode();
     }
   }
@@ -145,5 +153,9 @@ export class LeituraPage {
       inventario.bens = [];
     }
     inventario.bens.push({ codigo: codigoBem, conferido: lido });
+  }
+
+  get inventarioAtual() {
+    return this.inventariosService.inventarioAtual;
   }
 }

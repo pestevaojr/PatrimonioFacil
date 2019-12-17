@@ -65,7 +65,7 @@ export class LoginPage implements OnInit {
       .then(res => {
         console.log(res);
         this.errorMessage = '';
-        this.navCtrl.navigateForward('tabs/inventarios');
+        this.navCtrl.navigateRoot('tabs/inventarios');
       }, err => {
         this.errorMessage = err.message;
         console.log(err);
@@ -85,7 +85,7 @@ export class LoginPage implements OnInit {
     this.authService.loginWithGoogle().then(
       user => {
         loading.dismiss();
-        this.navCtrl.navigateForward('tabs/inventarios');
+        this.navCtrl.navigateRoot('tabs/inventarios');
         this.presentToast('Login efetuado com sucesso');
       },
       err => {

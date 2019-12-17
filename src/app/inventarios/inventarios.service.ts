@@ -64,7 +64,7 @@ export class InventariosService {
       } else if (i2.atual === true) {
         return 1;
       } else {
-        return i2.dataCriacao.getMilliseconds() - i1.dataCriacao.getMilliseconds();
+        return i1.dataCriacao.getMilliseconds() - i2.dataCriacao.getMilliseconds();
       }
     });
     return inventariosOrdenados;
