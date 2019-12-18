@@ -10,7 +10,7 @@
 <ion-content>
   <ion-card *ngIf="qtdeTotalBens > 0">
     <ion-card-header>
-      <ion-card-title>{{ qtdeBensConferidos / qtdeTotalBens | percent}} conferido <ion-chip *ngIf="inventario.atual" color="danger"><ion-label>Atual</ion-label></ion-chip></ion-card-title>
+      <ion-card-title>{{ qtdeBensConferidos / qtdeTotalBens | percent}} conferido <ion-chip *ngIf="inventario?.atual" color="danger"><ion-label>Atual</ion-label></ion-chip></ion-card-title>
       <ion-card-content>
         <div *ngIf="inventario?.localizacao">Localização: {{ inventario.localizacao }}</div>
       </ion-card-content>
