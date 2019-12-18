@@ -144,4 +144,12 @@ export class InventariosService {
     console.log('Obtendo inventários do serviço', this.inventarios);
     return this.inventarios;
   }
+
+  inventarioPorId(id) {
+    const inventario = this.inventarios.filter((i) => i.id == id);
+    if (inventario.length > 0) {
+      return inventario[0];
+    }
+    return undefined;
+  }
 }

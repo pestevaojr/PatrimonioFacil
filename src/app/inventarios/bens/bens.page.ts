@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Bem } from '../bem';
 import { Router, ActivatedRoute } from '@angular/router';
+import { InventariosService } from '../inventarios.service';
 
 @Component({
   selector: 'app-bens',
@@ -9,24 +10,43 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class BensPage implements OnInit {
 
+  idInventario: string;
   bens: Bem[] = [];
   bensLista: Bem[] = [];
+  filtro = 'conferidos';
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private service: InventariosService
+  ) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
-        this.bens = this.router.getCurrentNavigation().extras.state.bens;
+        this.idInventario = this.router.getCurrentNavigation().extras.state.idInventario;
+        console.log('Carregando parâmetro idInventario: ', this.idInventario);
       }
     });
+  }
 
-    this.bensLista = this.bensConferidos;
+  ionViewWillEnter() {
+    this.bens = this.carregarBens(this.idInventario);
+    this.aplicarFiltro(this.filtro);
+  }
+
+  carregarBens(idInventario) {
+    const inventario = this.service.inventarioPorId(idInventario);
+    return inventario.bens || [];
   }
 
   filtrarBens(event) {
     console.log(event);
-    const filtro = event.target.value;
+    this.filtro = event.target.value;
+    this.aplicarFiltro(this.filtro);
+  }
+
+  aplicarFiltro(filtro) {
     if (filtro === 'conferidos') {
       this.bensLista = this.bensConferidos;
     } else if (filtro === 'nao-conferidos') {

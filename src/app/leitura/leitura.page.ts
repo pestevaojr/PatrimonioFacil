@@ -88,7 +88,7 @@ export class LeituraPage {
 
   async presentToast(mensagem: string) {
     if (this.isCordova) {
-      this.toastNative.show(mensagem, '2000', 'center').subscribe();
+      await this.toastNative.show(mensagem, '2000', 'center').subscribe();
     } else {
       const toast = await this.toastController.create({
         message: mensagem,

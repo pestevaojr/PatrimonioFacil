@@ -27,10 +27,19 @@ export class InventarioDetalhesPage implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (this.router.getCurrentNavigation().extras.state) {
         this.inventario = this.router.getCurrentNavigation().extras.state.inventario;
+        console.log('Carregando parâmetros: ', this.inventario);
       }
     });
+  }
 
-    this.criarGrafico();
+  carregarInventario(id) {
+    return this.service.inventarioPorId(id);
+  }
+  
+  ionViewWillEnter() {
+    this.inventario = this.carregarInventario(this.inventario.id);
+    console.log('Abrindo inventário: ', this.inventario);
+    this.criarGrafico();    
   }
 
   criarGrafico() {
@@ -53,9 +62,9 @@ export class InventarioDetalhesPage implements OnInit {
 
   abrirListaBens() {
     const navigationExtras: NavigationExtras = {
-      state: { bens: this.inventario.bens }
+      state: { idInventario: this.inventario.id }
     };
-    this.router.navigate(['tabs/inventarios/bens'], navigationExtras);
+    this.router.navigate(['tabs/inventarios/bens', ], navigationExtras);
   }
 
   tornarAtual() {
