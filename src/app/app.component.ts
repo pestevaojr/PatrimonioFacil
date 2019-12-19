@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthenticationService } from './services/authentication.service';
+import { Toast } from '@ionic-native/toast/ngx';
+import { SairService } from './services/sair.service';
 
 @Component({
   selector: 'app-root',
@@ -11,13 +12,22 @@ import { AuthenticationService } from './services/authentication.service';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+
+  // set up hardware back button event.
+  lastTimeBackPress = 0;
+  timePeriodToExit = 2000;
+
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private toast: Toast,
+    private sairService: SairService
+
   ) {
     this.initializeApp();
+
+    this.backButtonEvent();
   }
 
   initializeApp() {
@@ -28,8 +38,27 @@ export class AppComponent {
       } else {
         this.statusBar.styleDefault();
       }
-      //this.splashScreen.hide();
       console.log('Aplicação iniciada');
+    });
+  }
+
+  // active hardware back button
+  backButtonEvent() {
+    this.platform.backButton.subscribe(async () => {
+      if (this.sairService.podeSair) {
+        if (new Date().getTime() - this.lastTimeBackPress < this.timePeriodToExit) {
+          // this.platform.exitApp(); // Exit from app
+          navigator['app'].exitApp(); // work in ionic 4
+
+        } else {
+          this.toast.show(
+            `Pressione voltar novamente para sair do app.`,
+            '2000',
+            'center')
+            .subscribe();
+          this.lastTimeBackPress = new Date().getTime();
+        }
+      }
     });
   }
 }

@@ -25,6 +25,8 @@ import { AngularFirestoreModule, AngularFirestore } from '@angular/fire/firestor
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { Dialogs } from '@ionic-native/dialogs/ngx';
+import { SairService } from './services/sair.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -44,12 +46,14 @@ import { File } from '@ionic-native/file/ngx';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     BarcodeScanner,
     Toast,
+    Dialogs,
     AuthenticationService,
     GooglePlus,
     FileChooser,
     FilePath,
     File,
-    NavController
+    NavController,
+    SairService
   ],
   bootstrap: [AppComponent]
 })

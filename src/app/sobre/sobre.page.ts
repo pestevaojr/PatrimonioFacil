@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Platform } from '@ionic/angular';
+import { Toast } from '@ionic-native/toast/ngx';
+import { SairService } from '../services/sair.service';
 
 @Component({
   selector: 'app-sobre',
@@ -7,6 +11,17 @@ import { Component } from '@angular/core';
 })
 export class SobrePage {
 
-  constructor() { }
+  constructor(
+    private platform: Platform,
+    private toast: Toast,
+    private sairService: SairService) { }
+
+  ionViewDidEnter() {
+    this.sairService.podeSair = true;
+  }
+
+  ionViewWillLeave() {
+    this.sairService.podeSair = false;
+  }
 
 }
