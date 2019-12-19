@@ -3,7 +3,6 @@ import { Inventario } from './inventario';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthenticationService } from '../services/authentication.service';
-import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +15,7 @@ export class InventariosService {
 
   constructor(
     private firestore: AngularFirestore,
-    private authService: AuthenticationService,
-    private alertCtrl: AlertController
+    private authService: AuthenticationService
   ) {
     this.carregarInventarios();
   }
@@ -109,18 +107,9 @@ export class InventariosService {
     await this.firestore.collection('inventarios').add(inventario).then(
       (res) => {
         console.log('Inventário inserido com sucesso. Id: ', res.id);
-        this.presentAlert('Inventário: ' + JSON.stringify(res.id));
       },
       (err) => console.log('Erro ao inserir inventário', err)
     );
-  }
-
-  async presentAlert(mensagem: string) {
-    const alert = await this.alertCtrl.create({
-      message: mensagem,
-      buttons: ['OK']
-    });
-    await alert.present();
   }
 
   async atualizarInventario(inventario: Inventario) {
