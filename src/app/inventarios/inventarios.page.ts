@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { InventariosService } from './inventarios.service';
 import { Router, NavigationExtras } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { NavigationOptions } from '@ionic/angular/dist/providers/nav-controller';
+import { Toast } from '@ionic-native/toast/ngx';
+import { SairService } from '../services/sair.service';
 
 @Component({
   templateUrl: 'inventarios.page.html',
@@ -13,8 +14,20 @@ export class InventariosPage {
 
   constructor(
     private service: InventariosService,
-    private router: Router
-    ) {}
+    private router: Router,
+    private platform: Platform,
+    private toast: Toast,
+    private sairService: SairService
+  ) { }
+
+  ionViewDidEnter() {
+    this.sairService.podeSair = true;
+  }
+
+  ionViewWillLeave() {
+    this.sairService.podeSair = false;
+    console.log('Saindo da página de inventários');
+  }
 
   get inventarios() {
     return this.service.obterInventarios();
