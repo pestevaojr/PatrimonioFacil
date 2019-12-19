@@ -5,6 +5,7 @@ import { Bem } from '../bem';
 import { GoogleChartInterface } from 'ng2-google-charts/google-charts-interfaces';
 import { InventariosService } from '../inventarios.service';
 import { NavController } from '@ionic/angular';
+import { Dialogs } from '@ionic-native/dialogs/ngx';
 
 @Component({
   selector: 'app-inventario-detalhes',
@@ -20,7 +21,8 @@ export class InventarioDetalhesPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private service: InventariosService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private dialogs: Dialogs
   ) { }
 
   ngOnInit() {
@@ -40,6 +42,7 @@ export class InventarioDetalhesPage implements OnInit {
     this.inventario = this.carregarInventario(this.inventario.id);
     console.log('Abrindo inventário: ', this.inventario);
     this.criarGrafico();    
+    console.log('url', this.router.url);
   }
 
   criarGrafico() {
@@ -72,8 +75,12 @@ export class InventarioDetalhesPage implements OnInit {
   }
 
   async excluirInventario() {
-    this.service.excluirInventario(this.inventario);
-    this.navCtrl.navigateBack('tabs/inventarios');
+    this.dialogs.confirm('Deseja realmente excluir o inventário?', this.inventario.nome, ['Sim', 'Não']).then(botao => {
+      if (botao == 1) {
+        this.service.excluirInventario(this.inventario);
+        this.navCtrl.navigateBack('tabs/inventarios');
+      }
+    });
   }
 
   get bensConferidos(): Bem[] {
