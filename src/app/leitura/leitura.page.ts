@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 
 import { BarcodeScannerOptions, BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { Platform, ToastController } from '@ionic/angular';
 import { InventariosService } from '../inventarios/inventarios.service';
 import { Inventario } from '../inventarios/inventario';
 import { Toast } from '@ionic-native/toast/ngx';
+import { Dialogs } from '@ionic-native/dialogs/ngx';
+import { SairService } from '../services/sair.service';
 
 @Component({
   selector: 'app-leitura',
@@ -13,8 +15,6 @@ import { Toast } from '@ionic-native/toast/ngx';
 })
 export class LeituraPage {
 
-  encodeData: any;
-  scannedData: {};
   barcodeScannerOptions: BarcodeScannerOptions;
   isCordova: boolean;
   codigoBemManual: number;
@@ -25,25 +25,25 @@ export class LeituraPage {
     private toastController: ToastController,
     private toastNative: Toast,
     private platform: Platform,
-    private inventariosService: InventariosService
+    private inventariosService: InventariosService,
+    private ngZone: NgZone,
+    private dialogs: Dialogs,
+    private sairService: SairService
   ) {
-    this.isCordova = platform.is('cordova');
-    this.encodeData = 'Patrimônio Fácil';
+    this.isCordova = this.platform.is('cordova');
     // Options
     this.barcodeScannerOptions = {
       showTorchButton: true,
       showFlipCameraButton: true,
       disableSuccessBeep: false,
-      prompt: 'Posicione o código de barras dentro da área clara'
+      prompt: 'Posicione o código de barras dentro da área clara',
+      resultDisplayDuration: 0
     };
-
   }
 
   ionViewCanLeave() {
     const podeSair = !this.scanCancelado;
-    
     this.scanCancelado = false;
-    this.presentToast('Pode sair: ' + podeSair);
     return podeSair;
   }
 
@@ -55,23 +55,31 @@ export class LeituraPage {
     }
   }
 
+  ionViewDidEnter() {
+    this.sairService.podeSair = this.scanCancelado;
+  }
+
+  ionViewWillLeave() {
+    this.sairService.podeSair = false;
+  }
+
   scanCode() {
+    console.log('Iniciando scan.');
     this.scanCancelado = false;
     this.barcodeScanner
       .scan(this.barcodeScannerOptions)
-      .then(barcodeData => {
+      .then(async barcodeData => {
         if (barcodeData.cancelled) {
           this.scanCancelado = true;
+          this.sairService.podeSair = true;
           this.presentToast('Cancelado');
         } else {
           const codigoBemLido = +barcodeData.text;
           if (this.validarCodigo(codigoBemLido)) {
             this.marcarBemComoLido(codigoBemLido); // cast string para number
           } else {
-            this.presentToast('Código inválido: ' + barcodeData.text);
+            this.presentAlert('Código inválido: ' + barcodeData.text, this.scanCode.bind(this));
           }
-          // escanear o próximo
-          this.scanCode();
         }
       })
       .catch(err => {
@@ -86,9 +94,14 @@ export class LeituraPage {
     return true;
   }
 
-  async presentToast(mensagem: string) {
+  async presentToast(mensagem: string, callback?) {
     if (this.isCordova) {
-      await this.toastNative.show(mensagem, '2000', 'center').subscribe();
+      if (callback) {
+        console.log('Mostrando toast');
+        this.toastNative.show(mensagem, '2000', 'center').subscribe(callback.bind(this));
+      } else {
+        this.toastNative.show(mensagem, '2000', 'center').subscribe((toast) => console.log(toast));
+      }
     } else {
       const toast = await this.toastController.create({
         message: mensagem,
@@ -98,7 +111,11 @@ export class LeituraPage {
     }
   }
 
-  marcarBemComoLido(codigoBemLido: number) {
+  presentAlert(mensagem: string, callback?) {
+    this.dialogs.alert(mensagem, 'Aviso').then(callback);
+  }
+
+  async marcarBemComoLido(codigoBemLido: number) {
     const inventario: Inventario = this.inventariosService.inventarioAtual;
     console.log('Inventário atual', inventario);
     console.log('Inserindo bem: ', codigoBemLido);
@@ -123,7 +140,7 @@ export class LeituraPage {
       this.adicionarBem(inventario, codigoBemLido);
       mensagem = codigoBemLido + ' - Bem adicionado e conferido.';
     }
-    this.presentToast(mensagem);
+    this.presentAlert(mensagem, this.scanCode.bind(this));
     this.inventariosService.salvarInventario(inventario);
   }
 
