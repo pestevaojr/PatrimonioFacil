@@ -41,11 +41,12 @@ export class LeituraPage {
     };
   }
 
-  ionViewCanLeave() {
+  /*ionViewCanLeave() {
+    console.log('can leave');
     const podeSair = !this.scanCancelado;
-    this.scanCancelado = false;
+    this.sairService.podeSair = true;
     return podeSair;
-  }
+  }*/
 
   ionViewWillEnter() {
     console.log('Inicializando o barcode scanner');
@@ -56,11 +57,14 @@ export class LeituraPage {
   }
 
   ionViewDidEnter() {
-    this.sairService.podeSair = this.scanCancelado;
+    console.log('entrou');
+    this.sairService.podeSair = false;
   }
 
   ionViewWillLeave() {
+    console.log('Saindo da página de leitura');
     this.sairService.podeSair = false;
+    this.scanCancelado = false;
   }
 
   scanCode() {
@@ -71,7 +75,9 @@ export class LeituraPage {
       .then(async barcodeData => {
         if (barcodeData.cancelled) {
           this.scanCancelado = true;
-          this.sairService.podeSair = true;
+          setTimeout(() => {
+            this.sairService.podeSair = true;
+          }, 200);
           this.presentToast('Cancelado');
         } else {
           const codigoBemLido = +barcodeData.text;
@@ -115,7 +121,7 @@ export class LeituraPage {
     this.dialogs.alert(mensagem, 'Aviso').then(callback);
   }
 
-  async marcarBemComoLido(codigoBemLido: number) {
+  async marcarBemComoLido(codigoBemLido: number, inseridoManualmente: boolean = false) {
     const inventario: Inventario = this.inventariosService.inventarioAtual;
     console.log('Inventário atual', inventario);
     console.log('Inserindo bem: ', codigoBemLido);
@@ -140,7 +146,11 @@ export class LeituraPage {
       this.adicionarBem(inventario, codigoBemLido);
       mensagem = codigoBemLido + ' - Bem adicionado e conferido.';
     }
-    this.presentAlert(mensagem, this.scanCode.bind(this));
+    if (inseridoManualmente === true) {
+      this.presentAlert(mensagem);
+    } else {
+      this.presentAlert(mensagem, this.scanCode.bind(this));
+    }
     this.inventariosService.salvarInventario(inventario);
   }
 
@@ -158,7 +168,7 @@ export class LeituraPage {
 
   conferirBemManualmente() {
     if (this.codigoBemManual && this.codigoBemManual > 0) {
-      this.marcarBemComoLido(this.codigoBemManual);
+      this.marcarBemComoLido(this.codigoBemManual, true);
       this.codigoBemManual = undefined;
     } else {
       this.presentToast('Código do bem inválido');

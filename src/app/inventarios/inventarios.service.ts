@@ -17,6 +17,7 @@ export class InventariosService {
     private firestore: AngularFirestore,
     private authService: AuthenticationService
   ) {
+    console.log('Construtor Inventários Service');
     this.carregarInventarios();
   }
 
@@ -27,6 +28,9 @@ export class InventariosService {
   }
 
   carregarInventarios() {
+    console.log('Entrou no carregarInventarios()');
+    console.log('User details: ', this.authService.userDetails());
+
     this.firestore.collection('inventarios',
       ref => ref.where('uid', '==', this.authService.userDetails().uid)
     ).snapshotChanges().subscribe(
@@ -80,7 +84,7 @@ export class InventariosService {
     return novoInventarioAtual;
   }
 
-  salvarInventario(inventarioParaSalvar: Inventario) {
+  async salvarInventario(inventarioParaSalvar: Inventario) {
     console.log('Salvando inventário ', inventarioParaSalvar);
     if (inventarioParaSalvar.id) {
       // atualizar
@@ -91,11 +95,13 @@ export class InventariosService {
       // tornar o novo atual
       const inventarioAtual = this.inventarioAtual;
       inventarioParaSalvar.atual = true;
-      this.inserirInventario(inventarioParaSalvar);
+      await this.inserirInventario(inventarioParaSalvar);
+
+      console.log('Salvar inventário - inventário novo inserido');
 
       if (inventarioAtual) {
         inventarioAtual.atual = false;
-        this.atualizarInventario(inventarioAtual);
+        await this.atualizarInventario(inventarioAtual);
       }
 
     }
@@ -104,9 +110,10 @@ export class InventariosService {
   async inserirInventario(inventario) {
     inventario.uid = this.authService.userDetails().uid;
     console.log('Inserindo inventário: ', inventario);
-    await this.firestore.collection('inventarios').add(inventario).then(
+    return this.firestore.collection('inventarios').add(inventario).then(
       (res) => {
         console.log('Inventário inserido com sucesso. Id: ', res.id);
+        inventario.id = res.id;
       },
       (err) => console.log('Erro ao inserir inventário', err)
     );
@@ -130,7 +137,6 @@ export class InventariosService {
   }
 
   obterInventarios() {
-    console.log('Obtendo inventários do serviço', this.inventarios);
     return this.inventarios;
   }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InventariosService } from '../inventarios.service';
-import { NavController, Platform, ToastController } from '@ionic/angular';
+import { NavController, Platform, ToastController, LoadingController } from '@ionic/angular';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { File } from '@ionic-native/file/ngx';
@@ -25,6 +25,8 @@ export class InventarioNovoPage implements OnInit {
 
   isCordova: boolean;
 
+  loading;
+
   constructor(
     private service: InventariosService,
     private navController: NavController,
@@ -34,15 +36,20 @@ export class InventarioNovoPage implements OnInit {
     private platform: Platform,
     private toastController: ToastController,
     private toastNative: Toast,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private loadingController: LoadingController
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.isCordova = this.platform.is('cordova');
 
     this.formNovoInventario = this.formBuilder.group({
       nome: ['', Validators.required],
       localizacao: ['']
+    });
+
+    this.loading = await this.loadingController.create({
+      message: 'Aguarde...'
     });
   }
 
@@ -60,7 +67,9 @@ export class InventarioNovoPage implements OnInit {
         localizacao: localizacao
       };
 
+      await this.presentLoading();
       await this.service.salvarInventario(novoInventario);
+      await this.dismissLoading();
       
       this.navController.navigateRoot('/tabs/inventarios');      
     } else {
@@ -132,4 +141,13 @@ export class InventarioNovoPage implements OnInit {
       toast.present();
     }
   }
+
+  async presentLoading() {
+    return await this.loading.present();
+  }
+
+  async dismissLoading() {
+    return await this.loading.dismiss();
+  }
+
 }

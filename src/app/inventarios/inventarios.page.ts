@@ -18,10 +18,18 @@ export class InventariosPage {
     private platform: Platform,
     private toast: Toast,
     private sairService: SairService
-  ) { }
+  ) { 
+    console.log('Construtor inventarios page');
+    this.service.carregarInventarios();
+  }
+
+  ngOnInit() {
+    console.log('iniciou inventarios page');
+  }
 
   ionViewDidEnter() {
     this.sairService.podeSair = true;
+    console.log('Entrou inventarios page');
   }
 
   ionViewWillLeave() {
